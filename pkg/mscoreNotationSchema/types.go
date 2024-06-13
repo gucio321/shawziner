@@ -15,5 +15,5 @@ type Chord struct {
 }
 
 type Note struct {
-	TPC int `xml:"tpc"`
+	Pitch int `xml:"pitch"`
 }

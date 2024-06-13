@@ -31,5 +31,6 @@ func main() {
 
 	// Parse our file into something golang-readable
 	resultU, err := result.AsGoMusic()
+	fmt.Println(result.Measures[2])
 	fmt.Println(resultU)
 }

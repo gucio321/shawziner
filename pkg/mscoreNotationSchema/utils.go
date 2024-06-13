@@ -8,7 +8,10 @@ import (
 	"github.com/gucio321/shawziner/pkg/mscoreNotationSchema/goMusic"
 )
 
-var InvalidDurationError = errors.New("Invalid duration")
+var (
+	InvalidDurationError = errors.New("Invalid duration")
+	InvalidPitchError    = errors.New("Invalid pitch")
+)
 
 func GetDuration(dur string, dots int) (goMusic.Duration, error) {
 	data := map[string]goMusic.Duration{
@@ -51,8 +54,14 @@ func (m *MUEFile) AsGoMusic() (*goMusic.Notes, error) {
 				return nil, fmt.Errorf("error while parsing duration %s: %w", chord.DurationType, err)
 			}
 
+			pitch := goMusic.Pitch(chord.Notes[0].Pitch)
+			if pitch < goMusic.G0 || pitch > goMusic.G2Sharp {
+				return nil, fmt.Errorf("pitch out of range %s, %w", chord.Notes[0].Pitch, InvalidPitchError)
+			}
+
 			notes.Notes = append(notes.Notes, goMusic.Note{
 				Duration: duration,
+				Pitch:    goMusic.Pitch(chord.Notes[0].Pitch),
 			})
 		}
 	}
