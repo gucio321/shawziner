@@ -13,8 +13,9 @@ func Test_IntToASCIIPos(t *testing.T) {
 		{26, "Aa"},
 		{50, "Ay"},
 		{51, "Az"},
-		{52, "BA"},
-		{2703, "zz"},
+		{52, "A0"},
+		{61, "A9"},
+		{62, "BA"},
 	}
 
 	for _, c := range cases {

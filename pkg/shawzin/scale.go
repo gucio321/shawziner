@@ -14,13 +14,23 @@ var (
 
 type Scale int
 
+//go:generate stringer -type=Scale
 const (
 	Chromatic Scale = 3
 )
 
 func GetNote(scale Scale, pitch goMusic.Pitch) (NoteIndex, error) {
 	date := map[Scale]map[goMusic.Pitch]NoteIndex{
-		Chromatic: {},
+		Chromatic: {
+			goMusic.C1:      1,
+			goMusic.C1Sharp: 2,
+			goMusic.D1:      4,
+			goMusic.D1Sharp: 9,
+			goMusic.E1:      10,
+			goMusic.F1:      12,
+			goMusic.F1Sharp: 17,
+			goMusic.G1:      18,
+		},
 	}
 
 	sc, Ok := date[scale]
