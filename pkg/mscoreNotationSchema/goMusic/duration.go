@@ -2,6 +2,10 @@ package goMusic
 
 type Duration int
 
+// these values are invented by me ;-)
+// lets generate human readable names for them:
+//
+//go:generate stringer -type=Duration
 const (
 	// Well, minimal Shawzin's duration is 1/32 of a note, so
 	WholeNote        Duration = 32
