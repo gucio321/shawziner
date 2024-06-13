@@ -40,4 +40,6 @@ const (
 	G2
 	G2Sharp
 	// because of Shawzin's range, I think we can end up here.
+
+	Pause Pitch = 0
 )

@@ -34,16 +34,26 @@ func _() {
 	_ = x[F2Sharp-76]
 	_ = x[G2-77]
 	_ = x[G2Sharp-78]
+	_ = x[Pause-0]
 }
 
-const _Pitch_name = "G0G0SharpA0A0SharpB0C1C1SharpD1D1SharpE1F1F1SharpG1G1SharpA1A1SharpB1C2C2SharpD2D2SharpE2F2F2SharpG2G2Sharp"
+const (
+	_Pitch_name_0 = "Pause"
+	_Pitch_name_1 = "G0G0SharpA0A0SharpB0C1C1SharpD1D1SharpE1F1F1SharpG1G1SharpA1A1SharpB1C2C2SharpD2D2SharpE2F2F2SharpG2G2Sharp"
+)
 
-var _Pitch_index = [...]uint8{0, 2, 9, 11, 18, 20, 22, 29, 31, 38, 40, 42, 49, 51, 58, 60, 67, 69, 71, 78, 80, 87, 89, 91, 98, 100, 107}
+var (
+	_Pitch_index_1 = [...]uint8{0, 2, 9, 11, 18, 20, 22, 29, 31, 38, 40, 42, 49, 51, 58, 60, 67, 69, 71, 78, 80, 87, 89, 91, 98, 100, 107}
+)
 
 func (i Pitch) String() string {
-	i -= 53
-	if i < 0 || i >= Pitch(len(_Pitch_index)-1) {
-		return "Pitch(" + strconv.FormatInt(int64(i+53), 10) + ")"
+	switch {
+	case i == 0:
+		return _Pitch_name_0
+	case 53 <= i && i <= 78:
+		i -= 53
+		return _Pitch_name_1[_Pitch_index_1[i]:_Pitch_index_1[i+1]]
+	default:
+		return "Pitch(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
-	return _Pitch_name[_Pitch_index[i]:_Pitch_index[i+1]]
 }

@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gucio321/shawziner/pkg/mscoreNotationSchema"
+	"github.com/gucio321/shawziner/pkg/shawzin"
 )
 
 func main() {
@@ -31,6 +32,19 @@ func main() {
 
 	// Parse our file into something golang-readable
 	resultU, err := result.AsGoMusic()
-	fmt.Println(result.Measures[2])
-	fmt.Println(resultU)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// now convert to Shawzin version
+	resultS, err := shawzin.GetShawzin(resultU, shawzin.Chromatic)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	/*
+		fmt.Println(result.Measures[2])
+		fmt.Println(resultU)
+	*/
+	fmt.Println(resultS)
 }
