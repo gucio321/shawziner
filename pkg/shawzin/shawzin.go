@@ -13,16 +13,15 @@ import (
 func GetShawzin(piece *goMusic.Notes, scale Scale) (result string, err error) {
 	pos := 0
 	for _, n := range piece.Notes {
-		var idx NoteIndex = 0
+		log.Printf("Note:%v, pos %v (%v)", n.Pitch, pos, IntToASCIIPos(pos))
 		if n.Pitch != goMusic.Pause {
-			idx, err = GetNote(scale, n.Pitch)
+			idx, err := GetNote(scale, n.Pitch)
 			if err != nil {
 				return "", err
 			}
-		}
 
-		log.Printf("Note: %v=%v (%v), pos %v (%v)", idx, idx.String(), n.Pitch, pos, IntToASCIIPos(pos))
-		result += idx.String() + IntToASCIIPos(pos)
+			result += idx.String() + IntToASCIIPos(pos)
+		}
 
 		pos += int(n.Duration)
 	}
