@@ -16,7 +16,9 @@ import (
 func main() {
 	// load file from input -f
 	var filename string
+	var plain bool
 	flag.StringVar(&filename, "f", "", "input file")
+	flag.BoolVar(&plain, "plain", false, "type of input file. Nothing for .mscz (zip), use for .mscx")
 	flag.Parse()
 
 	// read file
@@ -25,38 +27,42 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// decopress file
-	fileZip, err := zip.NewReader(bytes.NewReader(file), int64(len(file)))
-	if err != nil {
-		log.Fatal(err)
-	}
+	newData := file
 
-	fileName := ""
-	for _, file := range fileZip.File {
-		name := file.FileHeader.FileInfo().Name()
-		if name[len(name)-5:] == ".mscx" {
-			fileName = name
-			break
+	if !plain {
+		// decopress file
+		fileZip, err := zip.NewReader(bytes.NewReader(file), int64(len(file)))
+		if err != nil {
+			log.Fatal(err)
 		}
-	}
 
-	if fileName == "" {
-		log.Fatal("No mscx file found")
-	}
+		fileName := ""
+		for _, file := range fileZip.File {
+			name := file.FileHeader.FileInfo().Name()
+			if name[len(name)-5:] == ".mscx" {
+				fileName = name
+				break
+			}
+		}
 
-	fileReader, err := fileZip.Open(fileName)
-	if err != nil {
-		log.Fatal(err)
-	}
+		if fileName == "" {
+			log.Fatal("No mscx file found")
+		}
 
-	// now read file from the reader
-	newDataBuf := new(bytes.Buffer)
-	_, err = newDataBuf.ReadFrom(fileReader)
-	if err != nil {
-		log.Fatal(err)
-	}
+		fileReader, err := fileZip.Open(fileName)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	newData := newDataBuf.Bytes()
+		// now read file from the reader
+		newDataBuf := new(bytes.Buffer)
+		_, err = newDataBuf.ReadFrom(fileReader)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		newData = newDataBuf.Bytes()
+	}
 
 	// marshal file
 	result := new(mscoreNotationSchema.MUEFile)
