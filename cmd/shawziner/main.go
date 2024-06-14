@@ -1,6 +1,8 @@
 package main
 
 import (
+	"archive/zip"
+	"bytes"
 	"encoding/xml"
 	"flag"
 	"fmt"
@@ -23,9 +25,42 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// decopress file
+	fileZip, err := zip.NewReader(bytes.NewReader(file), int64(len(file)))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fileName := ""
+	for _, file := range fileZip.File {
+		name := file.FileHeader.FileInfo().Name()
+		if name[len(name)-5:] == ".mscx" {
+			fileName = name
+			break
+		}
+	}
+
+	if fileName == "" {
+		log.Fatal("No mscx file found")
+	}
+
+	fileReader, err := fileZip.Open(fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// now read file from the reader
+	newDataBuf := new(bytes.Buffer)
+	_, err = newDataBuf.ReadFrom(fileReader)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	newData := newDataBuf.Bytes()
+
 	// marshal file
 	result := new(mscoreNotationSchema.MUEFile)
-	err = xml.Unmarshal(file, result)
+	err = xml.Unmarshal(newData, result)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,9 +77,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	/*
-		fmt.Println(result.Measures[2])
-		fmt.Println(resultU)
-	*/
 	fmt.Println(resultS)
 }
