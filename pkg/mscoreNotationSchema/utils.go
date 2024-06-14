@@ -21,6 +21,8 @@ func GetDuration(dur string, dots int) (goMusic.Duration, error) {
 		"eighth":  goMusic.EighthNote,
 		"16th":    goMusic.SixteenthNote,
 		"32nd":    goMusic.ThirtySecondNote,
+
+		"measure": goMusic.WholeNote, // TODO: this depends on time signature
 	}
 
 	result, ok := data[dur]
@@ -51,17 +53,17 @@ func (m *MUEFile) AsGoMusic() (*goMusic.Notes, error) {
 		for _, chord := range measure.Chords {
 			duration, err := GetDuration(chord.DurationType, chord.Dots)
 			if err != nil {
-				return nil, fmt.Errorf("error while parsing duration %s: %w", chord.DurationType, err)
+				return nil, fmt.Errorf("error while parsing duration \"%s\": %w", chord.DurationType, err)
 			}
 
-			pitch := goMusic.Pitch(chord.Notes[0].Pitch)
-			if pitch < goMusic.G0 || pitch > goMusic.G2Sharp {
-				return nil, fmt.Errorf("pitch out of range %s, %w", chord.Notes[0].Pitch, InvalidPitchError)
+			pitch := goMusic.Pitch(chord.Notes.Pitch)
+			if pitch != 0 && (pitch < goMusic.G0 || pitch > goMusic.G2Sharp) {
+				return nil, fmt.Errorf("pitch out of range %s, %w", chord.Notes.Pitch, InvalidPitchError)
 			}
 
 			notes.Notes = append(notes.Notes, goMusic.Note{
 				Duration: duration,
-				Pitch:    goMusic.Pitch(chord.Notes[0].Pitch),
+				Pitch:    goMusic.Pitch(chord.Notes.Pitch),
 			})
 		}
 	}
