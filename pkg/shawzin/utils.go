@@ -8,7 +8,7 @@ func asciiTable() map[int]string {
 		30: "e", 31: "f", 32: "g", 33: "h", 34: "i", 35: "j", 36: "k", 37: "l", 38: "m", 39: "n",
 		40: "o", 41: "p", 42: "q", 43: "r", 44: "s", 45: "t", 46: "u", 47: "v", 48: "w", 49: "x",
 		50: "y", 51: "z", 52: "0", 53: "1", 54: "2", 55: "3", 56: "4", 57: "5", 58: "6", 59: "7",
-		60: "8", 61: "9",
+		60: "8", 61: "9", 62: "+", 63: "/",
 	}
 }
 
@@ -18,7 +18,7 @@ func asciiTable() map[int]string {
 func IntToASCIIPos(i int) string {
 	data := asciiTable()
 
-	const NewBase = 'Z' - 'A' + ('z' - 'a') + ('9' - '0') + 3
+	NewBase := len(data)
 	first := i / NewBase
 	second := i % NewBase
 

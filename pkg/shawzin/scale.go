@@ -32,7 +32,7 @@ func GetNote(scale Scale, pitch goMusic.Pitch) (NoteIndex, error) {
 			goMusic.G1:      18,
 			goMusic.G1Sharp: 20,
 			goMusic.A1:      33,
-			goMusic.A1Sharp: 54,
+			goMusic.A1Sharp: 34,
 			goMusic.B1:      36,
 			goMusic.C2:      52,
 			goMusic.C2Sharp: 44,

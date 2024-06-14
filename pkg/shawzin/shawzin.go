@@ -2,6 +2,7 @@ package shawzin
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/gucio321/shawziner/pkg/mscoreNotationSchema/goMusic"
 )
@@ -18,6 +19,7 @@ func GetShawzin(piece *goMusic.Notes, scale Scale) (string, error) {
 			return "", err
 		}
 
+		log.Printf("Note: %v=%v (%v), pos %v (%v)", idx, idx.String(), n.Pitch, pos, IntToASCIIPos(pos))
 		notes += idx.String() + IntToASCIIPos(pos)
 
 		pos += int(n.Duration)
